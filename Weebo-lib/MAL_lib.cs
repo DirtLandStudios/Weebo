@@ -13,6 +13,7 @@ namespace Weebo_lib
         static (string code_verifier, string code_challenge) _PKCE = PKCE.GeneratePKCE();
         static string code;
         static string state;
+        public static Anime[] UserAnimeList;
         public static void GetAuth()
         {
             const string redirectURL = "";
@@ -53,7 +54,7 @@ namespace Weebo_lib
                 .AddQueryParameter("status", Enum.GetName(status.watching))
                 .AddQueryParameter("sort", Enum.GetName(sorts.anime_title));
             IRestResponse response = client.Get(request);
-            Anime[] UserAnimeList = JsonSerializer.Deserialize<Anime[]>(response.Content);
+            UserAnimeList = JsonSerializer.Deserialize<Anime[]>(response.Content);
         }
 
         [System.Serializable]
