@@ -5,14 +5,14 @@ using System.Collections.Specialized;
 using System.Text.Json;
 namespace Weebo_lib
 {
-    public class MAL_lib
+    public static class MAL_lib
     {
-        string Client_ID;
-        string Client_Secret;
-        (string code_verifier, string code_challenge) _PKCE = PKCE.GeneratePKCE();
-        string code;
-        string state;
-        public void GetAuth()
+        static string Client_ID = "SECRET";
+        static string Client_Secret = "SECRET";
+        static (string code_verifier, string code_challenge) _PKCE = PKCE.GeneratePKCE();
+        static string code;
+        static string state;
+        public static void GetAuth()
         {
             const string redirectURL = "";
             string URL = $"https://myanimelist.net/v1/oauth2/authorize";
@@ -38,9 +38,14 @@ namespace Weebo_lib
                 .AddParameter("grant_type", "authorization_code")
                 .AddParameter("redirect_uri", redirectURL);
             IRestResponse responseToken = client.Get(request);
-          
-            (string token_type, int expires_in, string access_token, string refresh_token) TokenResponse;
-            //TODO: deserialize responseToken.Content into TokenResponse;
+            //TODO: JsonSerializer.Deserialize<JsonTokenResponse>(responseToken.Content);
+        }
+        static class JsonTokenResponse
+        {
+            static string token_type;
+            static int expires_in;
+            static string access_token;
+            static string refresh_token;
         }
     }
     

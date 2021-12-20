@@ -10,8 +10,13 @@ namespace Weebo_lib
 {
     public static class PKCE
     {
-
-        public static (string, string) GeneratePKCE()
+        public static class code_challenge_method
+        {
+            public static string Method = plain;
+            public const string plain = "plain";
+            public const string S256 = "S256";
+        }
+        public static (string, string) GeneratePKCE(string CodeChallengeMethod = code_challenge_method.plain)
         //https://datatracker.ietf.org/doc/html/rfc7636#section-4
         {
             string code_verifier;
@@ -21,13 +26,16 @@ namespace Weebo_lib
             Random RNG = new Random();
             const string range = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
             code_verifier = (string)Enumerable.Range(0, 20).Select(x => range[RNG.Next(0, range.Length)]);
-
+            //Assume Code Challenge (method = plain)
+            code_challenge = code_verifier;
             //Code Challenge (method = S256)
-            using (SHA256 sha256Hash = SHA256.Create())
+            if (CodeChallengeMethod == code_challenge_method.S256)
             {
-                code_challenge = Base64UrlEncode(GetHash(sha256Hash, code_verifier));
+                using (SHA256 sha256Hash = SHA256.Create())
+                {
+                    code_challenge = Base64UrlEncode(GetHash(sha256Hash, code_verifier));
+                }
             }
-
             return (code_verifier, code_challenge);
         }
 
