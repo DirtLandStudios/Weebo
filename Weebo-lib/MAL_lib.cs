@@ -41,6 +41,21 @@ namespace Weebo_lib
             IRestResponse responseToken = client.Get(request);
             JsonSerializer.Deserialize<TokenResponse>(responseToken.Content);
         }
+
+        public static void GetUserAnimeList()
+        {
+            RestClient client = new RestClient()
+            {
+                BaseUrl = new Uri("https://api.myanimelist.net/v2")
+            };
+            RestRequest request = (RestRequest)new RestRequest($"users/@me/animelist")
+                .AddHeader("Authorization", TokenResponse.access_token)
+                .AddQueryParameter("status", Enum.GetName(status.watching))
+                .AddQueryParameter("sort", Enum.GetName(sorts.anime_title));
+            IRestResponse response = client.Get(request);
+            Anime[] UserAnimeList = JsonSerializer.Deserialize<Anime[]>(response.Content);
+        }
+
         [System.Serializable]
         public record TokenResponse
         {
@@ -49,7 +64,21 @@ namespace Weebo_lib
             public static string access_token;
             public static string refresh_token;
         }
+        enum sorts
+        {
+            list_score,
+            list_updated_at,
+            anime_title,
+            anime_start_date
+            //anime Id under development
+        }
+        enum status
+        {
+            watching,
+            completed,
+            on_hold,
+            dropped,
+            plan_to_watch
+        }
     }
-    
-
 }
