@@ -12,7 +12,19 @@ namespace Weebo_lib
     {
         public static class code_challenge_method
         {
-            public static string Method = plain;
+            private static string _Method = plain;
+            //Method can only be plain or S256, no other values are possible
+            public static string Method
+            {
+                get => _Method;
+                set
+                {
+                    if (value == plain || value == S256)
+                    {
+                        _Method = value;
+                    }
+                }
+            }
             public const string plain = "plain";
             public const string S256 = "S256";
         }

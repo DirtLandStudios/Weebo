@@ -38,14 +38,15 @@ namespace Weebo_lib
                 .AddParameter("grant_type", "authorization_code")
                 .AddParameter("redirect_uri", redirectURL);
             IRestResponse responseToken = client.Get(request);
-            //TODO: JsonSerializer.Deserialize<JsonTokenResponse>(responseToken.Content);
+            JsonSerializer.Deserialize<TokenResponse>(responseToken.Content);
         }
-        static class JsonTokenResponse
+        [System.Serializable]
+        public record TokenResponse
         {
-            static string token_type;
-            static int expires_in;
-            static string access_token;
-            static string refresh_token;
+            public static string token_type;
+            public static int expires_in;
+            public static string access_token;
+            public static string refresh_token;
         }
     }
     
