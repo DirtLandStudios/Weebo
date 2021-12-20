@@ -7,8 +7,9 @@ namespace Weebo_lib
 {
     public static class MAL_lib
     {
-        static string Client_ID = "SECRET";
-        static string Client_Secret = "SECRET";
+        //create new "Secrets" class with public Client_ID and Client_Secret (from MAL)
+        static string Client_ID = Secrets.Client_ID;
+        static string Client_Secret = Secrets.Client_Secret;
         static (string code_verifier, string code_challenge) _PKCE = PKCE.GeneratePKCE();
         static string code;
         static string state;
@@ -31,7 +32,7 @@ namespace Weebo_lib
             client.BaseUrl = new Uri("https://myanimelist.net/v1/oauth2/token");
             RestRequest GetToken = (RestRequest)new RestRequest(Method.GET)
                 .AddParameter("client_id", Client_ID)
-                //not sure we need this
+                //not sure we need client_secret
                 .AddParameter("client_secret", Client_Secret)
                 .AddParameter("code", code)
                 .AddParameter("code_verifier", _PKCE.code_verifier)
