@@ -37,7 +37,7 @@ namespace Weebo_lib
             //Code Verifier
             Random RNG = new Random();
             const string range = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
-            code_verifier = (string)Enumerable.Range(0, 20).Select(x => range[RNG.Next(0, range.Length)]);
+            code_verifier = new string(Enumerable.Range(0, 43).Select(x => range[RNG.Next(0, range.Length)]).ToArray());
             //Assume Code Challenge (method = plain)
             code_challenge = code_verifier;
             //Code Challenge (method = S256)
